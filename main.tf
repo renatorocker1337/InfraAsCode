@@ -2,25 +2,34 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 3.27" // versão utilizada no treinamento Alura
+      version = "~> 3.27"
     }
   }
- 
-  required_version = ">= 0.14.9" // versão utilizada no treinamento Alura
+
+  required_version = ">= 0.14.9"
 
   
 }
 
 provider "aws" {
-  region  = "us-west-2" // Região Oregon EUA
+  profile = "default"
+  region  = "us-west-2"
 }
- 
+
 resource "aws_instance" "app_server" {
-  ami           = "ami-0cf2b4e024cdb6960" //Ubuntu server que peguei na AWS
-  instance_type = "t2.micro" // Tipo da instância t2.micro
+  ami           = "ami-0cf2b4e024cdb6960"
+  instance_type = "t2.micro"
   key_name = "iac-alura"
- 
+  #user_data = <<-EOF
+                 #!/bin/bash
+                 #cd /home/ubuntu
+                 #echo "<h1> Feito com terraform <h1/>" > index.html
+                 #nohup busybox httpd -f -p 8080 &
+                 # EOF
+
   tags = {
-    Name = "Primeira instancia" //Nome da instância
+    Name = "Teste aws"
   }
 }
+
+
