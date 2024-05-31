@@ -1,0 +1,24 @@
+terraform plan: Mostra o planejamento, o que vai ser alterado com as mudanças realizadas no arquivo main.tf
+terraform destroy: Destrói o ambiente criado com terraform
+terraform apply: Aplica as alterações no ambiente
+
+comando utilizado para conectar no ambiente que foi criado na AWS
+ssh -i "iac-alura.pem" ubuntu@ec2-35-91-193-241.us-west-2.compute.amazonaws.com
+
+nano settings.py:  Neste exemplo, abre o arquivo settints.py para edição, é necessário ampliar o terminal para que toda informação seja demonstrada corretamente. Após efetuar a alteração no arquivo, é necessário apertar Control + O 
+para salvar a alterção.
+
+ativa o ambiente virtual criado
+venv/bin/activate
+
+Executa o servidor do django na parta web global 0.0.0.0:8000
+python manage.py runserver 0.0.0.0:8000 
+
+Executa o ansible utilizando o arquivo playbook.yml que contém as instruções necessárias, com o usuário Uubuntu, com a chave privada iac-alura.pem usando como base o endereço informado no arquivo hosts.yml
+ansible-playbook playbook.yml -u ubuntu --private-key iac-alura.pem -i hosts.yml
+
+inicia o django criando a pasta setup
+django-admin startproject setup .
+
+Quando é informado ponto e vírgula (;) após um comando comando informado na linha de comando, o sistema entende que aqueles comandos devem ser executados juntos
+

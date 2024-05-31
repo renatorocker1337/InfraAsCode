@@ -1,9 +1,31 @@
 - hosts: terraform-ansible
 
   tasks: #Tarefas
-  - name: criando o arquivo #Nome da tarefa
+  - name: criando o arquivo index com extensão html #Nome da tarefa
     copy: #Copy é a tarefa para criar o arquivo, ela possui parâmetros dest(destino) e o conteúdo (content)
       dest: /home/ubuntu/index.html
       content: <h1>Criado com terraform e ansible</h1>
-  - name: criando o servidor
+  - name: criando o servidor para acessar o arquivo index com o ip da maquina  + 8080
     shell: "nohup busybox httpd -f -p 8080 &"
+
+  - name: instalando o Python3 e virtualenv  #Nome da tarefa
+    apt:   #apt é utilizado para instalar pacotes
+      pkg: #Instalação do pacote
+      - python3
+      - virtualenv
+      update_cache: yes # faz a atualização dos repositórios para manter a versão mais atualizada do python 3 e do virtualenv
+    become: yes #Para executar o comando como super usuario/root, sudo
+  - name: instalando dependencias com pip(Django e Django Rest)
+    pip: #Ansible da suporte para que se utilize o pip para instalação de dependências
+      virtualenv:  /home/ubuntu/tcc/venv
+      name: 
+        - django
+        - djangorestframework
+  - name: iniciando o projeto
+    shell: '. /home/ubuntu/tcc/venv/bin/activate; django-admin startproject setup /home/ubuntu/tcc'
+  - name: alterando nome no arquivo settings
+    lineinfile: # Linha no arquivo, precisa dos parâmetros path, regexp(expressão regular) e backrefs
+      path: /home/ubuntu/tcc/setup/settings.py #Caminho 
+      regexp: 'ALLOWED_HOSTS' #Expressão a ser buscada no arquivo
+      line: 'ALLOWED_HOSTS = ["*"]' #Alteração a ser realizada na linha do arquivo
+      backrefs: yes #Caso não encontre o arquivo ou a expressão, não faz nada no arquivo em si
